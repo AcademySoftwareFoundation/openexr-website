@@ -1,116 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>OpenEXR</title>
-		<link rel="stylesheet" href="stylesheets/main.css">
-		<script src="js/popUp.js" language="javascript"> </script>
-		<script src="js/headerScroll.js" language="javascript"> </script>
-	</head>
-	<header class= "collapse-header">
-		<aside class="header-logo" id="collapse-logo">
-			<img class="logo-img" id="logo-img" src="images/openEXR_logo.png" >
-		</aside>
-	</header>
-	
-	<div>
-		<div class="scroll-banner">
-		</div>
-	</div>
+	<script src="js/header.js" language="javascript"> </script>
 	<div class="page">
-		<div class="sticky-pos">
-			<nav id="nav-container">
-				<ul class="nav-ul-container">
-					<li class="nav-text"><a href="index.html">Home</a></li>
-					<li class="nav-text"><a href="about.html">About OpenEXR</a></li>
-					<li class="nav-text"><a href="download.html">Download</a></li>
-					<li class="nav-text"><a href="documentation.html">Documentation</a></li>
-					<li class="nav-text"><a href="images.html">Images</a></li>
-					<li class="nav-text"><a href="security.html">Security</a></li>
-					<li class="nav-text"><a href="news.html">News</a></li>
-					<li class="nav-text"><a href="help.html">Help</a></li>
-				</ul>
-			</nav>
-		</div>
+		<script src="js/navigation.js" language="javascript"> </script>
 		<div class="content">
 			<h1> OpenEXR </h1>
 			<hr class="divider">
 			<p>OpenEXR provides the specification and reference implementation of the EXR file format, the professional-grade image storage format of the motion picture industry.</p>
-			<p>Table of Contents:</p>
-			<ul>
-				<li>
-					<p>
-						<a href="about.html">About</a>
-					</p>
-				</li>
-				<li>
-					<p>
-						<a href="download.html">Download</a>
-					</p>
-				</li>
-				<li>
-					<p>
-						<a href="documentation.html">Documentation</a>
-					</p>
-				</li>
-				<li>
-					<p>
-						<a href="images.html">Images</a>
-					</p>
-				</li>
-				<li>
-					<p>
-						<a href="security.html">Security</a>
-					</p>
-				</li>
-				<li>
-					<p>
-						<a href="news.html">News</a>
-					</p>
-				</li>
-				<li>
-					<p>
-						<a href="help.html">Help</a>
-					</p>
-				</li>
-			</ul>
-			<h3 id="news">News</h3>
-			<hr class="sub-divider">
-			<ul>
-				<li>
-					<p>
-						<a href="news.html#june-15-2020---openexr-version-v252-is-released">OpenEXR version v2.5.2 is released (June 15, 2020)</a>
-					</p>
-				</li>
-				<li>
-					<p>
-						<a href="news.html#june-15-2020---openexr-version-v242-is-released">OpenEXR version v2.4.2 is released (June 15, 2020)</a>
-					</p>
-				</li>
-				<li>
-					<p>
-						<a href="news.html#may-11-2020---openexr-version-v251-is-released">OpenEXR version v2.5.1 is released (May 11, 2020)</a>
-					</p>
-				</li>
-				<li>
-					<p>
-						<a href="news.html#may-6-2020---openexr-version-v250-is-released">OpenEXR version v2.5.0 is released (May 6, 2020)</a>
-					</p>
-				</li>
-			</ul>
-			<h3 id="download">Download</h3>
-			<hr class="divider">
-			<p>The latest stable release is OpenEXR v2.5.2. Download it here: 
-				<a href="https://github.com/AcademySoftwareFoundation/openexr/archive/v2.5.2.tar.gz">v2.5.2.tar.gz</a>
-			</p>
-			<p>Download the most recent unstable development version from the GitHub repo:</p>
-			<pre><code>
-	git clone https://github.com/AcademySoftwareFoundation/openexr
-			</code></pre>
-			<p>See the 
-				<a href="download.html">download</a> page for help building from source.
-			</p>
 			
+			<div class="index-news-download">
+				<div class="column-index">
+					<h3 id="news">News</h3>
+					<hr class="sub-divider">
+					<ul>
+						<li>
+							<p>
+								<a href="news.html#june-15-2020---openexr-version-v252-is-released">OpenEXR version v2.5.2 is released (June 15, 2020)</a>
+							</p>
+						</li>
+						<li>
+							<p>
+								<a href="news.html#june-15-2020---openexr-version-v242-is-released">OpenEXR version v2.4.2 is released (June 15, 2020)</a>
+							</p>
+						</li>
+						<li>
+							<p>
+								<a href="news.html#may-11-2020---openexr-version-v251-is-released">OpenEXR version v2.5.1 is released (May 11, 2020)</a>
+							</p>
+						</li>
+						<li>
+							<p>
+								<a href="news.html#may-6-2020---openexr-version-v250-is-released">OpenEXR version v2.5.0 is released (May 6, 2020)</a>
+							</p>
+						</li>
+					</ul>
+				</div>
+				<div class="column-index">
+					<h3 id="download">Download</h3>
+					<hr class="sub-divider">
+					<p>The latest stable release is OpenEXR v2.5.2. Download it here: 
+						<a href="https://github.com/AcademySoftwareFoundation/openexr/archive/v2.5.2.tar.gz">v2.5.2.tar.gz</a>
+					</p>
+					<p>Download the most recent unstable development version from the GitHub repo:</p>
+					<pre class="pre-download"><code class="code-download">
+	git clone https://github.com/AcademySoftwareFoundation/openexr
+					</code></pre>
+					<p>See the 
+						<a href="download.html">download</a> page for help building from source.
+					</p>
+				</div>
+			</div>
 			<h3 id="the-openexr-file-format">The OpenEXR File Format</h3>
 			<hr class="sub-divider">	
 			<p>The purpose of the OpenEXR format is to accurately and efficiently represent high-dynamic-range scene-linear image data and associated metadata, with strong support for multi-part, multi-channel use cases.</p>
@@ -175,8 +114,8 @@
 			<h3 id="license">License</h3>
 			<hr class="sub-divider">
 			<p>OpenEXR is released under the 
-				<a href="https://github.com/smartin-13/openexr-website/blob/master/LICENSE.md">BSD-3-Clause</a> license. See 
-				<a href="OpenEXR/PATENTS">PATENTS</a> for license information about portions of OpenEXR that are provided under a different license.
+				<a href="license.html">BSD-3-Clause</a> license. See 
+				<a href="patents.html">PATENTS</a> for license information about portions of OpenEXR that are provided under a different license.
 			</p>
 			<br>
 			<figure>
