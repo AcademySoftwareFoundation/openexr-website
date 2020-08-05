@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+	<script src="js/header.js" language="javascript"> </script>
+	<div class="page">
+		<script src="js/navigation.js" language="javascript"> </script>
+		<div class="content">
+		<h1>About OpenEXR</h1>
+		<hr class="divider">
+		
+		<h3><a name="HDRI">High Dynamic Range Imagery</a></h3>
+		<hr class="sub-divider">
+			<p>	The following pictures show the same OpenEXR image, 
+				yet the amount of detail you can see when comparing the three 
+				is substantially different. The view out the window is obscured 
+				by the bright sunlight, although there is, in fact, a building 
+				next door with a rust-colored roof; the sky is blue, and there 
+				are even power lines visible above the building.
+			</p>
+			<br>
+			<table>
+				<tr>
+				  <td class="table-header"><b>Original OpenEXR Image</b> ... with original Exposure setting of zero (0):</td>
+				  <td class="table-header"><b>Adjust 4 Stops Darker</b> ... details emerge from the glaring sunlight.</td>
+				  <td class="table-header"><b>Adjust 8 Stops Darker</b> ... and even more details emerge from the outside.</td>
+				</tr>
+				<tr>
+				  <td class="table-content"><a href="javascript:OpenWin('samples/sample3_01.html')"><img src="images/sample3_01_sm.jpg" alt=""></a></td>
+				  <td class="table-content"><a href="javascript:OpenWin('samples/sample3_02.html')"><img src="images/sample3_02_sm.jpg" alt=""></a></td>
+				  <td class="table-content"><a href="javascript:OpenWin('samples/sample3_03.html')"><img src="images/sample3_03_sm.jpg" alt=""></a></td>
+				</tr>
+				<tr>
+				  <td class="table-footer"><a href="javascript:OpenWin('samples/sample3_01.html')">(click for larger image)</a></td>
+				  <td class="table-footer"><a href="javascript:OpenWin('samples/sample3_02.html')">(click for larger image)</a></td>
+				  <td class="table-footer"><a href="javascript:OpenWin('samples/sample3_03.html')">(click for larger image)</a></td>
+				</tr>
+			</table>
+			  <p align="right"><a href="#top" style="text-decoration: none;"><img src="images/top.gif" width="45" height="26" alt="back to top" border="0"></a></p>
+			  
+			<p>
+				The image on the left shows an exposure setting of 0. 
+				The middle image displays the image 4 stops darker, 
+				revealing details from the glaring sunlight. The image 
+				on the right is 8 stops darker, and even more details 
+				emerge from outside the window.
+			</p>
+		
+			<p>
+				With a program like Photoshop that is capable of working 
+				with and displaying high dynamic range images, changing 
+				the exposure does not affect the image data itself, it 
+				simply changes the way that the original 16-bit floating-point 
+				pixel values in the image are converted to 8-bit integer data 
+				in the frame buffer of the display device. We call the original 
+				16-bit pixels the "raw" image data, and the converted 8-bit pixels 
+				the "cooked" image data. When you change the exposure, you are 
+				"re-cooking" the data.
+			</p>
+			
+			<p><h3><a name="history">History of OpenEXR</a></h3>
+			<hr class="sub-divider">
+
+			<p>Industrial Light & Magic developed the OpenEXR format in 
+			response to the demand for higher color fidelity in the visual 
+			effects industry. When the project began in 2000, ILM evaluated 
+			existing file formats, but rejected them for various reasons:</p>
+
+			<ul>
+			<li>8- and 10-bit formats lack the dynamic range necessary to store
+			high-contrast images captured from HDR devices.</li>
+
+			<li>16-bit integer-based formats typically represent color component
+			values from 0  ("black") to 1 ("white"), but don't account for
+			over-range values (e.g., a chrome highlight) that can be captured by film
+			negative or other HDR devices.  For images intended only for
+			display or print reproduction, clamping at "white" may be sufficient;
+			but for image processing in a visual effects house, highlights often
+			need to be preserved in the image data.  Preserving over-range values in
+			the source image  allows an artist to change the apparent
+			exposure of the image with minimal loss of data, for example.</li>
+
+			<li>Conversely, 32-bit floating-point TIFF is often overkill for visual
+			effects work.  32-bit FP TIFF provides more than sufficient precision
+			and dynamic range for VFX images, but it comes at the cost of storage,
+			both on disk and in memory.  When creating background plates for VFX
+			work, film is usually scanned in at 2k pixels wide or more, and
+			24p HD images are 1920x1080, so background plates are already quite
+			large relative to "typical" digital images.</li>
+			</ul>
+
+
+			<p><h3><a name="features">OpenEXR Features</a></h3>
+			<hr class="sub-divider">
+			<p>
+				In 2000, ILM decided to develop a new HDR file format with color
+				component values stored in a new 16-bit floating-point type called
+				"half." This type is now compatible with the IEEE-754-2008 standard,
+				although note that this standard was not adopted until 2008, several
+				years after the develoment on OpenEXR.
+			</p>
+
+			<p>
+				Half values have 1 sign bit, 5 exponent bits, and 10 mantissa
+				bits. For linear images, this format provides 1024 (210) values per
+				color component per f-stop, and 30 f-stops (25 - 2), with an
+				additional 10 f-stops with reduced precision at the low end
+				(denormals).
+			</p>
+			
+			<p>
+				The half format supports denormalized numbers, positive and negative
+				infinities, and NaNs. It is identical to the half data type in
+				NVIDIA's CUDA platform, allowing a developer to process values from an
+				OpenEXR image directly on current NVIDIA GPUs.
+			</p>
+			
+			<p>
+				In addition to the half data type, OpenEXR supports 32-bit unsigned
+				integer and 32-bit floating-point data types. OpenEXR images can have
+				an arbitrary number of channels, each with a different data type.
+			</p>
+			
+			<p>
+				OpenEXR supports several lossless compression methods, some of which
+				can achieve compression ratios of about 2:1 for images with film
+				grain. OpenEXR is extensible, so developers can easily add new
+				compression methods (lossless or lossy).
+			</p>
+
+			<p>
+				OpenEXR images can be annotated with an arbitrary number of
+				attributes, e.g., with color balance information from a camera.
+			</p>
+			
+			<p>
+				OpenEXR images are able to support stereoscopic workflows by holding
+				multiple views resident in a single image file.
+			</p>
+			
+			<p>
+				OpenEXR also supports storing "Deep Data" buffers wherein pixels are
+				capable of holding variable number of data samples, particularly as
+				pertaining to depth. The implementation is capable of both hard
+				surface and volumetric representation requirements for deep
+				compositing workflows.
+			</p>
+			
+			<p>
+				OpenEXR also has the concept of "Multi-Part" files that contain a
+				number of separate, but related, images in one file. Access to any
+				part is independent of the others.
+			</p>
+			
+			<p>
+				Please see the technical documentation for further detail.
+			<p>
+
+			<h3><a name="features">Imath</a></h3>
+			<hr class="sub-divider">			
+			<p>
+				The half type is now distributed as a part of the Imath library, along
+				with other C++ classes that represent 2D and 3D vectors and matrices
+				and other simple but useful mathematical objects, functions, and data
+				types common in computer graphics applications. These classes were
+				originally distributed as the IlmBase library as a component of
+				OpenEXR, but as of the the 3.0 release of OpenEXR in late 2020, Imath
+				is now distributed independently of OpenEXR, although it continues to
+				be maintained by the OpenEXR project.
+			</p>
+			
+			<h3><a name="features">About the OpenEXR Project</a></h3>
+			<hr class="sub-divider">
+			
+			<p>
+			OpenEXR is a project of the <a href=https://www.aswf.io">Academy Software
+			Foundation</a>.  The format and library were
+			originally developed by Industrial Light & Magic and first released in
+			2003.  Weta Digital, Walt Disney Animation Studios, Sony Pictures
+			Imageworks, Pixar Animation Studios, DreamWorks, and other studios,
+			companies, and individuals have made contributions to the code base.
+			OpenEXR was adopted by the ASWF in 2019.
+			</p>
+
+			<p>
+				See the project <a href="GOVERNANCE.html">GOVERNANCE</a> page in the GitHub repo
+				for more information about how the project operates.
+			</p>
+
+			<p>
+				The OpenEXR project is dedicated to promoting a harassment-free
+				community. Read our <a href="CODE_OF_CONDUCT.html">code of conduct</a>.
+			</p>
+
+			<h3><a name="features">Contributing to OpenEXR</a></h3>
+			<hr class="sub-divider">
+			
+			<p>
+				For information on contributing to OpenEXR, see the CONTRIBUTING page
+				in the GitHub repo.
+			</p>
+
+			<h3><a name="features">Contributors</a></h3>
+			<hr class="sub-divider">
+			<ul>
+				<li>Andre Mazzone</li>
+				<li>Andrew Kunz</li>
+				<li>Arkady Shapkin</li>
+				<li>Arkell Rasiah</li>
+				<li>Brendan Bolles</li>
+				<li>Cary Phillips</li>
+				<li>Christina Tempelaar-Lietz</li>
+				<li>Christopher Horvath</li>
+				<li>Christopher Kulla</li>
+				<li>Daniel Kaneider</li>
+				<li>Drew Hess</li>
+				<li>Ed Hanway</li>
+				<li>Edward Kmett</li>
+				<li>Eric Sommerlade</li>
+				<li>Eric Wimmer</li>
+				<li>E Sommerlade</li>
+				<li>Florian Kainz</li>
+				<li>Halfdan Ingvarsson</li>
+				<li>Ibraheem Alhashim</li>
+				<li>Jack Kingsman</li>
+				<li>Jamie Kenyon</li>
+				<li>Ji Hun Yu</li>
+				<li>John Loy</li>
+				<li>John Mertic</li>
+				<li>Jonathan Stone</li>
+				<li>Juri Abramov</li>
+				<li>Karl Rasche</li>
+				<li>Kevin Wheatley</li>
+				<li>Kimball Thurston</li>
+				<li>Larry Gritz</li>
+				<li>Liam Fernandez</li>
+				<li>Lucy Wilkes</li>
+				<li>Michael Thomas</li>
+				<li>Nicholas Yue</li>
+				<li>Nick Porcino</li>
+				<li>Nick Rasmussen</li>
+				<li>Nicolas Chauvet</li>
+				<li>Paul Schneider</li>
+				<li>Peter Hillman</li>
+				<li>Piotr Stanczyk</li>
+				<li>Ralph Potter</li>
+				<li>Richard Goedeken</li>
+				<li>Rod Bogart</li>
+				<li>Shawn Walker-Salas</li>
+				<li>Simon Otter</li>
+				<li>Srinath Ravichandran</li>
+				<li>Thanh Ha</li>
+				<li>Thorsten Kaufmann</li>
+				<li>Wenzel Jakob</li>
+				<li>Wojciech Jarosz</li>
+				<li>Xo Wang</li>
+				<li>Yujie Shu</li>
+			</ul>
+			
+			<p align="right"><a href="#top" style="text-decoration: none;"><img src="images/top.gif" width="45" height="26" alt="back to top" border="0"></a></p>
+
+			<p>&nbsp;</p>
+		</div>
+	</div>
+	<footer class="primary-footer">
+		<small>
+			&copy; 
+			<script>var curDate=new Date();
+				document.write(curDate.getFullYear())
+			</script> Copyright OpenEXR a Series of LF Projects, LLC and/or its contributors. 
+			All documentation on this website made available under a Creative Commons Attribution 4.0 
+			International License.
+		</small>
+	</footer>
+ 
+</html>

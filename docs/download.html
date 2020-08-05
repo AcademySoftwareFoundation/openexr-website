@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+	<script src="js/header.js" language="javascript"> </script>
+	<div class="page">
+		<script src="js/navigation.js" language="javascript"> </script>
+		<div class="content">
+			<h1 id="building-and-installing-openexr">Building and Installing OpenEXR</h1>
+			<hr class="divider">
+
+			<h3 id="download">Download</h3>
+			<hr class="sub-divider">
+			<p>To build the latest release of OpenEXR, begin by downloading the source 
+			from the <a href="https://github.com/AcademySoftwareFoundation/openexr/tarball/v2.5.1">Releases page</a>.</p>
+			<p>To build from the latest development version, which may 
+			not be stable, download the  <a href="https://github.com/AcademySoftwareFoundation/openexr/tarball/master">master branch</a>, and extract the contents via 
+				<code>tar</code>.
+			</p>
+			<p>You can download the repository tarball file either via a browser, or on the Linux/macOS via the command line using 
+				<code>wget</code> or 
+				<code>curl</code>:
+			</p>
+			<pre><code>
+	% curl -L https://github.com/AcademySoftwareFoundation/openexr/tarball/master | tar xv
+			</code></pre>
+			<p>This will produce a source directory named 
+				<code>openexr-openexr-&lt;abbreviated-SHA-1-checksum&gt;</code>.
+			</p>
+			<p>Alternatively, clone the GitHub repo directly via:</p>
+			<pre><code>
+	% git clone https://github.com/AcademySoftwareFoundation/openexr.git
+			</code></pre>
+			<p>In the instructions that follow, we will refer to the top-level directory of the source code tree as 
+				<code>$source_directory</code>.
+			</p>
+			<h3 id="prerequisites">Prerequisites</h3>
+			<hr class="sub-divider">
+			<p>Make sure these are installed on your system before building OpenEXR:</p>
+			<ul>
+				<li>
+					<p>OpenEXR requires CMake version 3.10 or newer (or autoconf on Linux systems).</p>
+					<ul>
+						<li>NB: CMake 3.12 is required for current PyIlmBase support</li>
+					</ul>
+				</li>
+				<li>
+					<p>C++ compiler that supports C++11</p>
+				</li>
+				<li>
+					<p>Zlib</p>
+				</li>
+				<li>
+					<p>Python and boost-python if building the PyIlmBase module.</p>
+					<ul>
+						<li>
+							NB: If you have a custom install of boost and have issues, you may need to set Boost_ROOT and/or manually disable Boost_NO_BOOST_CMAKE in the PyIlmBase cmake file when you run cmake. See the FindBoost documentation that is
+							part of cmake for more information.
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<p>The instructions that follow describe building OpenEXR with CMake, but you can also build and install OpenEXR via the autoconf bootstrap/configure utilities, described below.</p>
+			<h3 id="linuxmacos-quick-start">Linux/macOS Quick Start</h3>
+			<hr class="sub-divider">
+			<p>To build via CMake, first choose a location for the build directory, which we will refer to as 
+				<code>$build_directory</code>.
+			</p>
+			<pre><code>			
+	% mkdir $build_directory
+	% cd $build_directory
+	% cmake $source_directory
+	% make
+	% make install
+			</code></pre>
+			<p>
+				Note that the CMake configuration prefers to apply an out-of-tree build process, since there may be multiple build configurations (i.e. debug and release), one per folder, all pointing at once source tree, hence the
+				
+				<code>$build_directory</code> noted above, referred to in CMake parlance as the 
+				<em>build directory</em>. You can place this directory wherever you like.
+
+			</p>
+			<p>
+				See the CMake Configuration Options section below for the most common configuration options especially the install directory. Note that with no arguments, as above, 
+				<code>make install</code> installs the header files in
+				
+				<code>/usr/local/include</code>, the object libraries in 
+				<code>/usr/local/lib</code>, and the executable programs in 
+				<code>/usr/local/bin</code>.
+
+			</p>
+			<h3 id="windows-quick-start">Windows Quick Start</h3>
+			<hr class="sub-divider">
+			<p>
+				Under Windows, if you are using a command line-based setup, such as cygwin, you can of course follow the above. For Visual Studio, cmake generators are “multiple configuration”, so you don’t even have to set the build type, although you
+				will most likely need to specify the install location. Install Directory By default, 
+				<code>make install</code> installs the headers, libraries, and programs into 
+				<code>/usr/local</code>, but you can specify a local install directory to
+				cmake via the 
+				<code>CMAKE_INSTALL_PREFIX</code> variable:
+
+			</p>
+			<pre><code>
+	% cmake .. -DCMAKE_INSTALL_PREFIX=$install_directory
+			</code></pre>
+			<h3 id="library-names">Library Names</h3>
+			<hr class="sub-divider">
+			<p>
+				Using either cmake or autoconf based configuration mechanisms described in this document, by default the installed libraries follow a pattern for how they are named. This is done to enable multiple versions of the library to be
+				installed and targeted by different builds depending on the needs of the project. A simple example of this would be to have different versions of the library installed to allow for applications targeting different VFX Platform years to
+				co-exist.
+			</p>
+			<p>If you are building dynamic libraries, once you have configured, built, and installed the libraries, you should see the following pattern of symlinks and files in the install lib folder:</p>
+			<pre><code>
+		libHalf.so -&gt; libHalf-$LIB_SUFFIX.so
+		libHalf-$LIB_SUFFIX.so -&gt; libHalf-$LIB_SUFFIX.so.$SO_MAJOR_VERSION
+		libHalf-$LIB_SUFFIX.so.$SO_MAJOR_VERSION -&gt; libHalf-$LIB_SUFFIX.so.$SO_FULL_VERSION
+		libHalf-$LIB_SUFFIX.so.$SO_FULL_VERSION (actual file)
+			</code></pre>
+			<p>
+				You can configure the LIB_SUFFIX, although it defaults to the library major and minor version, so in the case of a 2.3 library, it would default to 2_3. You would then link your programs against this versioned library to have maximum
+				safety (i.e. 
+				<code>-lHalf-2_3</code>), and the pkg-config and cmake configuration files included with find_package should set this up.
+
+			</p>
+			<h3 id="sub-modules">Sub-Modules</h3>
+			<hr class="sub-divider">
+			<p>
+				OpenEXR consists of three separate sub-modules - IlmBase, PyIlmBase, and OpenEXR - which can be built independently. The repository’s top-level CMakeLists.txt defines a 
+				<em>super-project</em> that builds all three modules, and the steps
+				above for running cmake at the top level of the repo build each of the sub-modules, in parallel.
+
+			</p>
+			<p>However you can build each submodule individually. To build and install individual sub-modules, build and install the IlmBase module first:</p>
+			<pre><code>
+	% mkdir $build_directory
+	% cd $build_directory
+	% cmake -DCMAKE_INSTALL_PREFIX=$install_directory \ $source_directory/Ilmbase
+	% cmake --build . --target install --config Release 
+			</code></pre>
+			<p>
+				Once IlmBase is installed, then build and install the OpenEXR module, taking care to set the 
+				<code>CMAKE_SYSTEM_PREFIX</code> to the directory in which you installed IlmBase and 
+				<code>CMAKE_INSTALL_PREFIX</code> to the directory in
+				which to install OpenEXR:
+
+			</p>
+			<pre><code>
+	% mkdir $build_directory
+	% cd $build_directory
+	% cmake -DCMAKE_SYSTEM_PREFIX=$install_directory \ 
+			-DCMAKE_INSTALL_PREFIX=$install_directory \ 
+			$source_directory/OpenEXR
+	% cmake --build . --target install --config Release
+			</code></pre>
+			<p>Optionally, then build and install PyIlmBase</p>
+			<p>
+				The libraries in IlmBase and OpenEXR follow the standard cmake setting of 
+				<code>BUILD_SHARED_LIBS</code> to control whether to build static or shared libraries. However, they each have separate controls over whether to build both shared
+				and static libraries as part of one configuration, as well as other customization options.
+
+			</p>
+			<h3 id="custom-namespaces">Custom Namespaces</h3>
+			<hr class="sub-divider">
+			<p>
+				If you are interested in controlling custom namespace declarations or similar options, you are encouraged to look at the 
+				<code>CMakeLists.txt</code> infrastructure. In particular, there has been an attempt to centralize the settings
+				into a common place to more easily see all of them in a text editor. For IlmBase, this is config/IlmBaseSetup.cmake inside the IlmBase tree. For OpenEXR, the settings will similarly be found in 
+				<code>config/OpenEXRSetup.cmake</code>. As
+				per usual, these settings can also be seen and/or edited using any of the various gui editors for working with cmake such as 
+				<code>ccmake</code>, 
+				<code>cmake-gui</code>, as well as some of the IDEs in common use.
+
+			</p>
+			<h3 id="cross-compiling-specifying-specific-compilers">Cross Compiling / Specifying Specific Compilers</h3>
+			<hr class="sub-divider">
+			<p>
+				When trying to either cross-compile for a different platform, or for tasks such as specifying a compiler set to match the VFX reference platform (https://vfxplatform.com/), cmake provides the idea of a toolchain which may be useful
+				instead of having to remember a chain of configuration options. It also means that platform-specific compiler names and options are out of the main cmake file, providing better isolation.
+			</p>
+			<p>
+				A toolchain file is simply just a cmake script that sets all the compiler and related flags and is run very early in the configuration step to be able to set all the compiler options and such for the discovery that cmake performs
+				automatically. These options can be set on the command line still if that is clearer, but a theoretical toolchain file for compiling for VFX Platform 2015 is provided in the source tree at cmake/Toolchain-Linux-VFX_Platform15.cmake
+				which will hopefully provide a guide how this might work.
+			</p>
+			<p>
+				For cross-compiling for additional platforms, there is also an included sample script in cmake/Toolchain-mingw.cmake which shows how cross compiling from Linux for Windows may work. The compiler names and paths may need to be changed
+				for your environment.
+			</p>
+			<p>More documentation:</p>
+			<ul>
+				<li><a href ="https://cmake.org/cmake/help/v3.12/manual/cmake-toolchains.7.html">Toolchains</a></li>
+				<li><a href="https://gitlab.kitware.com/cmake/community/-/wikis/home">Cross compiling</a></li>
+			</ul>
+			<h3 id="cmake-configuration-options">CMake Configuration Options</h3>
+			<hr class="sub-divider">
+			<p>The default CMake configuration options are stored in 
+				<code>IlmBase/config/IlmBaseSetup.cmake</code> and in 
+				<code>OpenEXR/config/OpenEXRSetup.cmake</code>. To see a complete set of option variables, run:
+			</p>
+			<pre><code>
+	% cmake -LAH $source_directory
+			</code></pre>
+			<p>You can customize these options three ways:</p>
+			<ol type="1">
+				<li>Modify the 
+					<code>.cmake</code> files in place.
+				</li>
+				<li>Use the UI 
+					<code>cmake-gui</code> or 
+					<code>ccmake</code>.
+				</li>
+				<li>Specify them as command-line arguments when you invoke cmake.</li>
+			</ol>
+			<h3 id="verbose-output-options">Verbose Output Options:</h3>
+			<hr class="sub-divider">
+			<ul>
+				<li>
+					<p>
+						<strong>CMAKE_EXPORT_COMPILE_COMMANDS</strong>
+					</p>
+					<p>Enable/Disable output of compile commands during generation. Default is OFF.</p>
+				</li>
+				<li>
+					<p>
+						<strong>CMAKE_VERBOSE_MAKEFILE</strong>
+					</p>
+					<p>Echo all compile commands during make. Default is OFF.</p>
+				</li>
+			</ul>
+			<h3 id="compiler-options">Compiler Options:</h3>
+			<hr class="sub-divider">
+			<ul>
+				<li>
+					<p>
+						<strong>OPENEXR_CXX_STANDARD</strong>
+					</p>
+					<p>C++ standard to compile against. This obeys the global 
+						<code>CMAKE_CXX_STANDARD</code> but doesn’t force the global setting to enable sub-project inclusion. Default is 
+						<code>14</code>.
+					</p>
+				</li>
+			</ul>
+			<h3 id="library-naming-options">Library Naming Options:</h3>
+			<hr class="sub-divider">
+			<ul>
+				<li>
+					<p>
+						<strong>ILMBASE_LIB_SUFFIX</strong>
+					</p>
+					<p>Append the given string to the end of all the IlmBase libraries. Default is 
+						<code>-&lt;major&gt;_&lt;minor&gt;</code> version string. Please see the section on library names
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>OPENEXR_LIB_SUFFIX</strong>
+					</p>
+					<p>Append the given string to the end of all the OpenEXR libraries. Default is 
+						<code>-&lt;major&gt;_&lt;minor&gt;</code> version string. Please see the section on library names
+					</p>
+				</li>
+			</ul>
+			<h3 id="namespace-options">Namespace Options:</h3>
+			<hr class="sub-divider">
+			<ul>
+				<li>
+					<p>
+						<strong>ILMBASE_IEX_NAMESPACE</strong>
+					</p>
+					<p>Public namespace alias for Iex. Default is 
+						<code>Iex</code>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>ILMBASE_ILMTHREAD_NAMESPACE</strong>
+					</p>
+					<p>Public namespace alias for IlmThread. Default is 
+						<code>IlmThread</code>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>ILMBASE_IMATH_NAMESPACE</strong>
+					</p>
+					<p>Public namespace alias for Imath. Default is 
+						<code>Imath</code>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>ILMBASE_INTERNAL_IEX_NAMESPACE</strong>
+					</p>
+					<p>Real namespace for Iex that will end up in compiled symbols. Default is 
+						<code>Iex\_&lt;major&gt;\_&lt;minor&gt;</code>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>ILMBASE_INTERNAL_ILMTHREAD_NAMESPACE</strong>
+					</p>
+					<p>Real namespace for IlmThread that will end up in compiled symbols. Default is 
+						<code>IlmThread\_&lt;major&gt;\_&lt;minor&gt;</code>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>ILMBASE_INTERNAL_IMATH_NAMESPACE</strong>
+					</p>
+					<p>Real namespace for Imath that will end up in compiled symbols. Default is 
+						<code>Imath\_&lt;major&gt;\_&lt;minor&gt;</code>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>ILMBASE_NAMESPACE_CUSTOM</strong>
+					</p>
+					<p>Whether the namespace has been customized (so external users know)</p>
+				</li>
+				<li>
+					<p>
+						<strong>OPENEXR_IMF_NAMESPACE</strong>
+					</p>
+					<p>Public namespace alias for Imath. Default is 
+						<code>Imf</code>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>OPENEXR_INTERNAL_IMF_NAMESPACE</strong>
+					</p>
+					<p>Real namespace for Imath that will end up in compiled symbols. Default is 
+						<code>Imf\_&lt;major&gt;\_&lt;minor&gt;</code>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>OPENEXR_NAMESPACE_CUSTOM</strong>
+					</p>
+					<p>Whether the namespace has been customized (so external users know)</p>
+				</li>
+			</ul>
+			<h3 id="python-options">Python Options:</h3>
+			<hr class="sub-divider">
+			<ul>
+				<li>
+					<p>
+						<strong>PyIlmBase_Python2_SITEARCH_REL</strong>
+					</p>
+					<p>
+						This will normally be computed based on where the python2 binary and site-packages live and then be a relative path based on the root of those. For example, if site-packages is in
+						
+						<code>/usr/lib/python2.7/site-packages</code> and the python binary is 
+						<code>/usr/bin/python2.7</code>, this will result in the default install path being 
+						<code>${CMAKE\_INSTALL\_PREFIX}/lib/python2.7/site-packages</code>
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>PyIlmBase_Python3_SITEARCH_REL</strong>
+					</p>
+					<p>Identical logic to PyIlmBase_Python2_SITEARCH_REL path above, but for python 3.x</p>
+				</li>
+			</ul>
+			<h3 id="linting-options">Linting Options:</h3>
+			<hr class="sub-divider">
+			<p>These linting options are experimental, and primarily for developer-only use at this time.</p>
+			<ul>
+				<li>
+					<p>
+						<strong>ILMBASE_USE_CLANG_TIDY</strong>
+					</p>
+					<p>Enable clang-tidy for IlmBase libraries, if it is available. Default is OFF.</p>
+				</li>
+				<li>
+					<p>
+						<strong>OPENEXR_USE_CLANG_TIDY</strong>
+					</p>
+					<p>Enable clang-tidy for OpenEXR libraries, if it is available. Default is OFF.</p>
+				</li>
+			</ul>
+			<h3 id="testing-options">Testing Options:</h3>
+			<hr class="sub-divider">
+			<ul>
+				<li>
+					<p>
+						<strong>BUILD_TESTING</strong>
+					</p>
+					<p>Build the testing tree. Default is ON. Note that this causes the test suite to be compiled, but it is not executed.</p>
+				</li>
+				<li>
+					<p>
+						<strong>OPENEXR_RUN_FUZZ_TESTS</strong>
+					</p>
+					<p>Controls whether to include the fuzz tests (very slow). Default is OFF.</p>
+				</li>
+			</ul>
+			<h3 id="additional-cmake-options">Additional CMake Options:</h3>
+			<hr class="sub-divider">
+			<p>See the <a href="https://cmake.org/cmake/help/v3.12/">cmake documentation</a> for more information </p>
+			<ul>
+				<li>
+					<p>
+						<strong>CMAKE_BUILD_TYPE</strong>
+					</p>
+					<p>For builds when not using a multi-configuration generator. Available values: 
+						<code>Debug</code>, 
+						<code>Release</code>, 
+						<code>RelWithDebInfo</code>, 
+						<code>MinSizeRel</code>
+					</p>
+				</li>
+				<li>
+					<p>
+						<strong>BUILD_SHARED_LIBS</strong>
+					</p>
+					<p>
+						This is the primary control whether to build static libraries or shared libraries / dlls (side note: technically a convention, hence not an official 
+						<code>CMAKE\_</code> variable, it is defined within cmake and used everywhere
+						to control this static / shared behavior)
+					
+					</p>
+				</li>
+				<li>
+					<p>For forcing particular compilers to match VFX platform requirements</p>
+					<p>** CMAKE_CXX_COMPILER**</p>
+					<p>** CMAKE_C_COMPILER**</p>
+					<p>** CMAKE_LINKER**</p>
+					<p>All the related cmake compiler flags (i.e. CMAKE_CXX_FLAGS, CMAKE_CXX_FLAGS_DEBUG)</p>
+					<p>** CMAKE_INSTALL_RPATH**</p>
+					<p>For non-standard install locations where you don’t want to have to set 
+						<code>LD_LIBRARY_PATH</code> to use them
+					</p>
+				</li>
+			</ul>
+			<h3 id="cmake-tips-and-tricks">Cmake Tips and Tricks:</h3>
+			<hr class="sub-divider">
+			<p>If you have <a href ="https://ninja-build.org/">ninja</a> installed, it is faster than make. You can generate ninja files using cmake when doing the initial generation:</p>
+			<pre><code>
+	% cmake -G “Ninja” ..
+			</code></pre>
+			<p>If you would like to confirm compile flags, you don’t have to specify the verbose configuration up front, you can instead run</p>
+			<pre><code>
+	% make VERBOSE=1
+			</code></pre>
+			<h3 id="configuring-via-autoconf">Configuring via Autoconf</h3>
+			<hr class="sub-divider">
+			<p>As an alternative to CMake on Linux systems, the OpenEXR build can be configured via the provided bootstrap/configure scripts:</p>
+			<pre><code>
+	% cd $source_directory/IlmBase
+	% ./bootstrap
+	% ./configure --prefix=$install_directory
+	% make
+	% make install
+
+	% cd $source_directory/OpenEXR
+	% ./bootstrap
+	% ./configure --prefix=$install_directory \ 
+	 --with-ilmbase-prefix=$install_directory
+	% make 
+	% make install
+
+	% cd $source_directory/PyIlmBase
+	% ./bootstrap
+	% ./configure --prefix=$install_directory \ 
+	 --with-ilmbase-prefix=$install_directory
+	% make 
+	% make install
+			</code></pre>
+			<p>Run 
+				<code>./configure --help</code> for a complete set of configuration options.
+			</p>
+	
+		</div>
+	</div>
+	<footer class="primary-footer">
+		<small>
+			&copy; 
+			<script>var curDate=new Date();
+				document.write(curDate.getFullYear())
+			</script> Copyright OpenEXR a Series of LF Projects, LLC and/or its contributors. 
+			All documentation on this website made available under a Creative Commons Attribution 4.0 
+			International License.
+		</small>
+	</footer>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+	<script src="js/header.js" language="javascript"> </script>
+	<div class="page">
+		<script src="js/navigation.js" language="javascript"> </script>
+		<div class="content">
+			<h1> OpenEXR </h1>
+			<hr class="divider">
+			<p>OpenEXR provides the specification and reference implementation of the EXR file format, the professional-grade image storage format of the motion picture industry.</p>
+			
+			<div class="index-news-download">
+				<div class="column-index">
+					<h3 id="news">News</h3>
+					<hr class="sub-divider">
+					<ul>
+						<li>
+							<p>
+								<a href="news.html#june-15-2020---openexr-version-v252-is-released">OpenEXR version v2.5.2 is released (June 15, 2020)</a>
+							</p>
+						</li>
+						<li>
+							<p>
+								<a href="news.html#june-15-2020---openexr-version-v242-is-released">OpenEXR version v2.4.2 is released (June 15, 2020)</a>
+							</p>
+						</li>
+						<li>
+							<p>
+								<a href="news.html#may-11-2020---openexr-version-v251-is-released">OpenEXR version v2.5.1 is released (May 11, 2020)</a>
+							</p>
+						</li>
+						<li>
+							<p>
+								<a href="news.html#may-6-2020---openexr-version-v250-is-released">OpenEXR version v2.5.0 is released (May 6, 2020)</a>
+							</p>
+						</li>
+					</ul>
+				</div>
+				<div class="column-index">
+					<h3 id="download">Download</h3>
+					<hr class="sub-divider">
+					<p>The latest stable release is OpenEXR v2.5.2. Download it here: 
+						<a href="https://github.com/AcademySoftwareFoundation/openexr/archive/v2.5.2.tar.gz">v2.5.2.tar.gz</a>
+					</p>
+					<p>Download the most recent unstable development version from the GitHub repo:</p>
+					<pre class="pre-download"><code class="code-download">
+	git clone https://github.com/AcademySoftwareFoundation/openexr
+					</code></pre>
+					<p>See the 
+						<a href="download.html">download</a> page for help building from source.
+					</p>
+				</div>
+			</div>
+			<h3 id="the-openexr-file-format">The OpenEXR File Format</h3>
+			<hr class="sub-divider">	
+			<p>The purpose of the OpenEXR format is to accurately and efficiently represent high-dynamic-range scene-linear image data and associated metadata, with strong support for multi-part, multi-channel use cases.</p>
+			<p>OpenEXR is widely used in host application software where accuracy is critical, such as photorealistic rendering, texture access, image compositing, deep compositing, and DI.</p>
+			<p>OpenEXR is a project of the 
+				<a href="https://www.aswf.io">Academy Software Foundation</a>.
+			</p>
+			<p>OpenEXR is included in the 
+				<a href="https://vfxplatform.com">VFX Reference Platform</a>.
+			</p>
+			<h3 id="openexr-features">OpenEXR Features</h3>
+			<hr class="sub-divider">
+			<ul>
+				<li>
+					<p>High dynamic range and color precision.</p>
+				</li>
+				<li>
+					<p>Support for 16-bit floating-point, 32-bit floating-point, and 32-bit integer pixels.</p>
+				</li>
+				<li>
+					<p>Multiple image compression algorithms, both lossless and lossy. Some of the included codecs can achieve 2:1 lossless compression ratios on images with film grain. The lossy codecs have been tuned for visual quality and decoding performance.</p>
+				</li>
+				<li>
+					<p>Extensibility. New compression codecs and image types can easily be added by extending the C++ classes included in the OpenEXR software distribution. New image attributes (strings, vectors, integers, etc.) can be added to OpenEXR image headers without affecting backward compatibility with existing OpenEXR applications.</p>
+				</li>
+				<li>
+					<p>Support for stereoscopic image workflows and a generalization to multi-views.</p>
+				</li>
+				<li>
+					<p>Flexible support for deep data: pixels can store a variable-length list of samples and, thus, it is possible to store multiple values at different depths for each pixel. Hard surfaces and volumetric data representations are accommodated.</p>
+				</li>
+				<li>
+					<p>Multipart: ability to encode separate, but related, images in one file. This allows for access to individual parts without the need to read other parts in the file.</p>
+				</li>
+				<li>
+					<p>Versioning: OpenEXR source allows for user configurable C++ namespaces to provide protection when using multiple versions of the library in the same process space.</p>
+				</li>
+			</ul>
+			<h3 id="the-openexr-project-mission">The OpenEXR Project Mission</h3>
+			<hr class="sub-divider">
+			<p>The goal of the OpenEXR project is to keep the EXR format reliable and modern and to maintain its place as the preferred image format for entertainment content creation.</p>
+			<p>Major revisions are infrequent, and new features will be carefully weighed against increased complexity. The principal priorities of the project are:</p>
+			<ul>
+				<li>
+					<p>Robustness, reliability, security</p>
+				</li>
+				<li>
+					<p>Backwards compatibility, data longevity</p>
+				</li>
+				<li>
+					<p>Performance - read/write/compression/decompression time</p>
+				</li>
+				<li>
+					<p>Simplicity, ease of use, maintainability</p>
+				</li>
+				<li>
+					<p>Wide adoption, multi-platform support - Linux, Windows, macOS, and others</p>
+				</li>
+			</ul>
+			<p>OpenEXR is intended solely for 2D data. It is not appropriate for storage of volumetric data, cached or lit 3D scenes, or more complex 3D data such as light fields.</p>
+			<p>The goals of the IlmBase project are simplicity, ease of use, correctness and verifiability, and breadth of adoption. IlmBase is not intended to be a comprehensive linear algebra or numerical analysis package.</p>
+			<h3 id="license">License</h3>
+			<hr class="sub-divider">
+			<p>OpenEXR is released under the 
+				<a href="license.html">BSD-3-Clause</a> license. See 
+				<a href="patents.html">PATENTS</a> for license information about portions of OpenEXR that are provided under a different license.
+			</p>
+			<br>
+			<figure>
+				<img src="images/aswf.png" alt="aswf"/>
+			</figure>
+
+		</div>
+	</div>
+	
+	<footer class="primary-footer">
+		<small>
+			&copy; 
+			<script>var curDate=new Date();
+				document.write(curDate.getFullYear())
+			</script> Copyright OpenEXR a Series of LF Projects, LLC and/or its contributors. 
+			All documentation on this website made available under a Creative Commons Attribution 4.0 
+			International License.
+		</small>
+	</footer>
+</html>
