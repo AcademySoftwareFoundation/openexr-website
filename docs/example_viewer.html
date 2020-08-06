@@ -21,7 +21,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.8.6/umd/react.development.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.6/umd/react-dom.development.js"></script>
-  <script src="../jeri.js"></script>
+  <script src="../build_web/jeri.js"></script>
   <script>
     const data = {
       title: 'root',
@@ -31,23 +31,23 @@
           children: [
             {
               title: 'Denoised',
-              image: '../../openexr-images/Beachball/multipart.0001.exr',
+              image: 'openexr-images/Beachball/multipart.0001.exr',
             },
             {
               title: 'Input',
-              image: 'images/test_input.exr',
+              image: 'openexr-images/Beachball/multipart.0002.exr',
             },
             {
               title: 'Reference',
-              image: 'images/test_reference.exr',
+              image: 'openexr-images/Beachball/multipart.0003.exr',
             },
             {
               title: '1-SSIM',
               tonemapGroup: 'other',
               lossMap: {
                 function: 'SSIM',
-                imageA: 'images/test_image.exr',
-                imageB: 'images/test_reference.exr',
+                imageA: 'openexr-images/Beachball/multipart.0002.exr',
+                imageB: 'openexr-images/Beachball/multipart.0003.exr',
               }
             },
             {
