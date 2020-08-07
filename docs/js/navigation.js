@@ -12,7 +12,7 @@ document.write('\
 				<a href="download.html">Download</a>\
 			</li>\
 			<li class="nav-text">\
-				<a href="https://github.com/smartin-13/openexr-website/wiki/OpenEXR-Wiki">Documentation</a>\
+				<a href="https://github.com/AcademySoftwareFoundation/openexr/wiki">Documentation</a>\
 			</li>\
 			<li class="nav-text">\
 				<a href="images.html">Images</a>\

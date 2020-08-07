@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<script src="js/header.js" language="javascript"> </script>
+	<div class="page">
+		<script src="js/navigation.js" language="javascript"> </script>
+		<!-- begin content -->
+		<div class="content">
+			<h1 id=ImageInfoHeader></h1>	
+			<div class="img-info">		
+				<img id="EXRHeaderInfo"></img>
+			</div>
+			<div id="EXRHeaderInfoDiv">
+			</div>
+			<script type="text/javascript">
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				const img = urlParams.get('img')
+				const script = urlParams.get('script')
+				document.getElementById("EXRHeaderInfo").src="images/openexr-images/"+img;
+				document.getElementById("ImageInfoHeader").innerHTML=img+" Header Info";
+				var content = document.getElementById('EXRHeaderInfoDiv');
+				var s = document.createElement('script');
+				s.src = "js/headerInfo/"+script;
+				content.appendChild(s);
+				//document.getElementById("EXRHeaderScript").src="js/headerInfo/"+script;
+				///document.getElementById("EXRHeaderInfoDiv").innerHTML='<script src="js/headerInfo/'+script+'" language="javascript"><\/script>';
+				// var content = document.getElementById('EXRHeaderInfoDiv')
+				// var script = document.createElement('script');
+				// script.onload =
+				// newDiv.innerHTML='id="EXRHeaderScript" src="js/headerInfo/'+script+'" language="javascript"';
+				// content.append(newDiv);
+
+				//container.innerHTML = '<script id="EXRHeaderScript" src="js/headerInfo/'+script+'" language="javascript"><\/script>';
+
+			</script>
+
+		</div>
+	</div>
+	<footer class="primary-footer">
+		<small>
+			&copy; 
+			<script>var curDate=new Date();
+				document.write(curDate.getFullYear())
+			</script> Copyright OpenEXR a Series of LF Projects, LLC and/or its contributors. 
+			All documentation on this website made available under a Creative Commons Attribution 4.0 
+			International License.
+		</small>
+	</footer>
+</html>
