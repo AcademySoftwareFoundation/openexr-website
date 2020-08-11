@@ -414,8 +414,77 @@ h2
   clear: both;
 }
 
+/*
+	========================================
+	Image Gallery
+	=========================================
+*/
+.img-gallery {
+  margin: 0.5em;
+  border: 2px solid #A9A9A9;
+  display: inline-block;
+  width: auto;
+  height: 209px;
+  background: #000;
+}
 
+.img-gallery:hover {
+  border: 1px solid #ca2e3c;
+}
 
+.img-gallery img {
+  max-height: calc(100% - 36px);
+  max-width: : 100%;
+  background: blue;
+  vertical-align: bottom;
+}
+
+.img-desc {
+  color: #f9f9f9;
+  padding: 5px;
+  text-align: center;
+  font-size:15px;
+  background: black;
+}
+
+div.img-gallery2 {
+  margin: 0.5em;
+  border: 2px solid #A9A9A9;
+  display: inline-block;
+  width: auto;
+  height: 209px;
+  background: #f9f9f9;
+}
+
+div.img-gallery2:hover {
+  border: 1px solid #ca2e3c;
+}
+
+div.img-gallery2 img {
+  max-height: calc(100% - 36px);
+  max-width: : 100%;
+  vertical-align: bottom;
+
+}
+
+div.img-desc2 {
+  color: #000;
+  padding: 5px;
+  text-align: center;
+  font-size:15px;
+}
+div.img-desc3 {
+  color: #000;
+  padding: 5px;
+  text-align: center;
+  font-size:15px;
+ }
+div.img-desc4 {
+  color: #f9f9f9;
+  padding: 5px;
+  text-align: center;
+  font-size:15px;
+}
 /*
 	========================================
 	Footer
