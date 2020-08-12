@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<script src="js/header.js" language="javascript"> </script>
+	<div class="page">
+		<script src="js/navigation.js" language="javascript"> </script>
+		<!-- begin content -->
+		<div class="content">
+			<h1 id=ImageInfoHeader></h1>	
+			<div class="img-info">		
+				<img id="EXRHeaderInfo"></img>
+			</div>
+			<script src="js/headerinfo/beachball_multipart0001.js" language="javascript"> </script>
+			<script type="text/javascript">
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				const img = urlParams.get('img')
+				document.getElementById("EXRHeaderInfo").src="images/openexr-images/"+img;
+				document.getElementById("ImageInfoHeader").innerHTML=img+" Header Info";
+			</script>
+		</div>
+	</div>
+	<footer class="primary-footer">
+		<small>
+			&copy; 
+			<script>var curDate=new Date();
+				document.write(curDate.getFullYear())
+			</script> Copyright OpenEXR a Series of LF Projects, LLC and/or its contributors. 
+			All documentation on this website made available under a Creative Commons Attribution 4.0 
+			International License.
+		</small>
+	</footer>
+</html>
