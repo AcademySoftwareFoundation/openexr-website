@@ -9,13 +9,15 @@
 			<div class="img-info">		
 				<img id="EXRHeaderInfo"></img>
 			</div>
-			<script src="js/headerInfo/beachball_multipart0001.js" language="javascript"> </script>
+			<script id="EXRHeaderScript" language="javascript"> </script>
 			<script type="text/javascript">
 				const queryString = window.location.search;
 				const urlParams = new URLSearchParams(queryString);
 				const img = urlParams.get('img')
+				const script = urlParams.get('script')
 				document.getElementById("EXRHeaderInfo").src="images/openexr-images/"+img;
 				document.getElementById("ImageInfoHeader").innerHTML=img+" Header Info";
+				document.getElementById("EXRHeaderScript").src="js/headerInfo/"+script;
 			</script>
 		</div>
 	</div>
