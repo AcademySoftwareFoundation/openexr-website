@@ -13,10 +13,11 @@
 				yet the amount of detail you can see when comparing the three 
 				is substantially different. The view out the window is obscured 
 				by the bright sunlight, although there is, in fact, a building 
-				next door with a rust-colored roof; the sky is blue, and there 
+				next door with a rust-colored roof. The sky is blue, and there 
 				are even power lines visible above the building.
 			</p>
 			<br>
+
 			<table>
 				<tr>
 				  <td class="table-header"><b>Original OpenEXR Image</b> ... with original Exposure setting of zero (0):</td>
@@ -56,7 +57,7 @@
 				"re-cooking" the data.
 			</p>
 			
-			<p><h3><a name="history">History of OpenEXR</a></h3>
+			<p><h3><a name="origins">The Origins of OpenEXR</a></h3>
 			<hr class="sub-divider">
 
 			<p>Industrial Light & Magic developed the OpenEXR format in 
@@ -65,10 +66,10 @@
 			existing file formats, but rejected them for various reasons:</p>
 
 			<ul>
-			<li>8- and 10-bit formats lack the dynamic range necessary to store
-			high-contrast images captured from HDR devices.</li>
+			<li><p>8- and 10-bit formats lack the dynamic range necessary to store
+			high-contrast images captured from HDR devices.</p></li>
 
-			<li>16-bit integer-based formats typically represent color component
+			<li><p>16-bit integer-based formats typically represent color component
 			values from 0  ("black") to 1 ("white"), but don't account for
 			over-range values (e.g., a chrome highlight) that can be captured by film
 			negative or other HDR devices.  For images intended only for
@@ -76,82 +77,84 @@
 			but for image processing in a visual effects house, highlights often
 			need to be preserved in the image data.  Preserving over-range values in
 			the source image  allows an artist to change the apparent
-			exposure of the image with minimal loss of data, for example.</li>
+			exposure of the image with minimal loss of data, for example.</p></li>
 
-			<li>Conversely, 32-bit floating-point TIFF is often overkill for visual
+			<li><p>Conversely, 32-bit floating-point TIFF is often overkill for visual
 			effects work.  32-bit FP TIFF provides more than sufficient precision
 			and dynamic range for VFX images, but it comes at the cost of storage,
 			both on disk and in memory.  When creating background plates for VFX
 			work, film is usually scanned in at 2k pixels wide or more, and
 			24p HD images are 1920x1080, so background plates are already quite
-			large relative to "typical" digital images.</li>
+			large relative to "typical" digital images.</p></li>
 			</ul>
 
+			<p>In 2000, ILM decided to develop a new HDR file format with color
+			  component values stored in a new 16-bit floating-point type called
+			  "half." This type is now compatible with the IEEE-754-2008 standard,
+			  although note that this standard was not adopted until 2008, several
+			  years after the develoment on OpenEXR.</p>
 
 			<p><h3><a name="features">OpenEXR Features</a></h3>
 			<hr class="sub-divider">
 			<p>
-				In 2000, ILM decided to develop a new HDR file format with color
-				component values stored in a new 16-bit floating-point type called
-				"half." This type is now compatible with the IEEE-754-2008 standard,
-				although note that this standard was not adopted until 2008, several
-				years after the develoment on OpenEXR.
 			</p>
 
-			<p>
-				Half values have 1 sign bit, 5 exponent bits, and 10 mantissa
+                        <ul>
+			<li>
+				<p>Half values have 1 sign bit, 5 exponent bits, and 10 mantissa
 				bits. For linear images, this format provides 1024 (210) values per
 				color component per f-stop, and 30 f-stops (25 - 2), with an
 				additional 10 f-stops with reduced precision at the low end
-				(denormals).
-			</p>
+				(denormals).</p>
+			</li>
 			
-			<p>
-				The half format supports denormalized numbers, positive and negative
+			<li>
+			        <p>The half format supports denormalized numbers, positive and negative
 				infinities, and NaNs. It is identical to the half data type in
 				NVIDIA's CUDA platform, allowing a developer to process values from an
-				OpenEXR image directly on current NVIDIA GPUs.
-			</p>
+				OpenEXR image directly on current NVIDIA GPUs.</p>
+			</li>
 			
-			<p>
-				In addition to the half data type, OpenEXR supports 32-bit unsigned
+			<li>
+				<p>In addition to the half data type, OpenEXR supports 32-bit unsigned
 				integer and 32-bit floating-point data types. OpenEXR images can have
-				an arbitrary number of channels, each with a different data type.
-			</p>
+				an arbitrary number of channels, each with a different data type.</p>
+			</li>
 			
-			<p>
-				OpenEXR supports several lossless compression methods, some of which
+			<li>
+				<p>OpenEXR supports several lossless compression methods, some of which
 				can achieve compression ratios of about 2:1 for images with film
 				grain. OpenEXR is extensible, so developers can easily add new
-				compression methods (lossless or lossy).
-			</p>
+				compression methods (lossless or lossy).</p>
+			</li>
 
-			<p>
-				OpenEXR images can be annotated with an arbitrary number of
-				attributes, e.g., with color balance information from a camera.
-			</p>
+			<li>
+				<p>OpenEXR images can be annotated with an arbitrary number of
+				attributes, e.g., with color balance information from a camera.</p>
+			</li>
 			
-			<p>
-				OpenEXR images are able to support stereoscopic workflows by holding
-				multiple views resident in a single image file.
-			</p>
+			<li>
+				<p>OpenEXR images are able to support stereoscopic workflows by holding
+				multiple views resident in a single image file.</p>
+			</li>
 			
-			<p>
-				OpenEXR also supports storing "Deep Data" buffers wherein pixels are
+			<li>
+				<p>OpenEXR also supports storing "Deep Data" buffers wherein pixels are
 				capable of holding variable number of data samples, particularly as
 				pertaining to depth. The implementation is capable of both hard
 				surface and volumetric representation requirements for deep
-				compositing workflows.
-			</p>
+				compositing workflows.</p>
+			</li>
 			
-			<p>
-				OpenEXR also has the concept of "Multi-Part" files that contain a
+			<li>
+				<p>OpenEXR also has the concept of "Multi-Part" files that contain a
 				number of separate, but related, images in one file. Access to any
-				part is independent of the others.
-			</p>
-			
+				part is independent of the others.</p>
+			</li>
+			</ul>
+                          
 			<p>
-				Please see the technical documentation for further detail.
+				Please see the <a href="https://github.com/AcademySoftwareFoundation/openexr/wiki">technical documentation</a> for more details.
 			<p>
 
 			<h3><a name="features">Imath</a></h3>
@@ -171,7 +174,7 @@
 			<hr class="sub-divider">
 			
 			<p>
-			OpenEXR is a project of the <a href=https://www.aswf.io">Academy Software
+			OpenEXR is a project of the <a href="https://www.aswf.io">Academy Software
 			Foundation</a>.  The format and library were
 			originally developed by Industrial Light & Magic and first released in
 			2003.  Weta Digital, Walt Disney Animation Studios, Sony Pictures
@@ -181,21 +184,27 @@
 			</p>
 
 			<p>
-				See the project <a href="GOVERNANCE.html">GOVERNANCE</a> page in the GitHub repo
-				for more information about how the project operates.
+			  See the project
+                                <a href="https://github.com/AcademySoftwareFoundation/openexr/blob/master/GOVERNANCE.md">GOVERNANCE</a>
+				page for more information about how
+				the project operates.
 			</p>
 
 			<p>
-				The OpenEXR project is dedicated to promoting a harassment-free
-				community. Read our <a href="CODE_OF_CONDUCT.html">code of conduct</a>.
+				The OpenEXR project is dedicated to
+				promoting a harassment-free
+				community. Read our
+                                <a href="https://github.com/AcademySoftwareFoundation/openexr/blob/master/CODE_OF_CONDUCT.md">code of conduct</a>.
 			</p>
 
 			<h3><a name="features">Contributing to OpenEXR</a></h3>
 			<hr class="sub-divider">
 			
 			<p>
-				For information on contributing to OpenEXR, see the CONTRIBUTING page
-				in the GitHub repo.
+				For information on contributing to
+				OpenEXR, see the
+                                <a href="https://github.com/AcademySoftwareFoundation/openexr/blob/master/CONTRIBUTING.md">CONTRIBUTING</a>
+                                page.
 			</p>
 
 			<h3><a name="features">Contributors</a></h3>
