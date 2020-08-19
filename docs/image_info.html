@@ -9,7 +9,8 @@
 			<div class="img-info">		
 				<img id="EXRHeaderInfo"></img>
 			</div>
-			<script id="EXRHeaderScript" language="javascript"> </script>
+			<div id="EXRHeaderInfoDiv">
+			</div>
 			<script type="text/javascript">
 				const queryString = window.location.search;
 				const urlParams = new URLSearchParams(queryString);
@@ -17,8 +18,22 @@
 				const script = urlParams.get('script')
 				document.getElementById("EXRHeaderInfo").src="images/openexr-images/"+img;
 				document.getElementById("ImageInfoHeader").innerHTML=img+" Header Info";
-				document.getElementById("EXRHeaderScript").src="js/headerInfo/"+script;
+				var content = document.getElementById('EXRHeaderInfoDiv');
+				var s = document.createElement('script');
+				s.src = "js/headerInfo/"+script;
+				content.appendChild(s);
+				//document.getElementById("EXRHeaderScript").src="js/headerInfo/"+script;
+				///document.getElementById("EXRHeaderInfoDiv").innerHTML='<script src="js/headerInfo/'+script+'" language="javascript"><\/script>';
+				// var content = document.getElementById('EXRHeaderInfoDiv')
+				// var script = document.createElement('script');
+				// script.onload =
+				// newDiv.innerHTML='id="EXRHeaderScript" src="js/headerInfo/'+script+'" language="javascript"';
+				// content.append(newDiv);
+
+				//container.innerHTML = '<script id="EXRHeaderScript" src="js/headerInfo/'+script+'" language="javascript"><\/script>';
+
 			</script>
+
 		</div>
 	</div>
 	<footer class="primary-footer">
