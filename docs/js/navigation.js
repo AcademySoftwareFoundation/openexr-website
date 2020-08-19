@@ -6,7 +6,7 @@ document.write('\
 				<a href="index.html">Home</a>\
 			</li>\
 			<li class="nav-text">\
-				<a href="about.html">About</a>\
+				<a href="about.html">About OpenEXR</a>\
 			</li>\
 			<li class="nav-text">\
 				<a href="download.html">Download</a>\

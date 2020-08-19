@@ -23,10 +23,9 @@ function isScrolled() {
 		headerElem[0].style.height = "100px";
 		bannerElem[0].style.height = "150px";
 			  
-		logoImage[0].style.height="60px"; 
-		headerImgElem[0].style.marginLeft="50%";
-		headerImgElem[0].style.left="0px";
-		headerImgElem[0].style.top="20px";
+		logoImage[0].style.height="80px"; 
+		headerImgElem[0].style.left="45px";
+		headerImgElem[0].style.top="28px";
 
 	}  
 	else { 
@@ -34,7 +33,6 @@ function isScrolled() {
 		bannerElem[0].style.height = "250px";
 					  
 		logoImage[0].style.height="160px";
-		headerImgElem[0].style.marginLeft="0%";
 		headerImgElem[0].style.left="20px";
 		headerImgElem[0].style.top="20px";
 	} 
@@ -47,10 +45,9 @@ function scrollFunction() {
 		headerElem[0].style.height = "100px"; 
 		bannerElem[0].style.height = "150px";
 			  
-		logoImage[0].style.height="60px"; 
-		headerImgElem[0].style.marginLeft="50%";
-		headerImgElem[0].style.left="0px";
-		headerImgElem[0].style.top="20px";
+		logoImage[0].style.height="80px"; 
+		headerImgElem[0].style.left="45px";
+		headerImgElem[0].style.top="28px";
 
 	}  
 	else { 
@@ -58,7 +55,6 @@ function scrollFunction() {
 		bannerElem[0].style.height = "250px";
 					  
 		logoImage[0].style.height="160px";
-		headerImgElem[0].style.marginLeft="0%";
 		headerImgElem[0].style.left="20px";
 		headerImgElem[0].style.top="20px";
 	} 
